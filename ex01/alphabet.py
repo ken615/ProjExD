@@ -29,13 +29,13 @@ def main():
             print("正解です。素晴らしい！")
             break
         else:
-            print("不正解です。またチャレンジしてください。")
+            print("不正解です。またチャレンジしてください。")#不正解と表示する
         i += 1
 
 def make_target(target, num):#アルファベットと対象文字数を引数に取る
     display = []#対象文字
     for i in range(num):
-        display.append(target[random.randint(0, len(target - 1))])#対象文字をnum_tgtの数だけ入れる
+        display.append(target[random.randint(0, (len(target) - 1))])#対象文字をnum_tgtの数だけ入れる
     return display#対象文字をかえす
 
 def lose_target(num, alphabet, target):#欠損文字数とアルファベットと対象文字を引数に取る
