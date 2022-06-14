@@ -26,7 +26,7 @@ def main():
         lose2 = input("二つ目の文字を入力してください。 : ")
         seikai = lose_target(num_lost, alphabet, display)
         if (lose1 in seikai & lose2 in seikai):
-            print("正解です。素晴らしい！")
+            print("正解です。素晴らしい！!")
             break
         else:
             print("不正解です。またチャレンジしてください。")#不正解と表示する
