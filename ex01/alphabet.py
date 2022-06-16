@@ -1,19 +1,109 @@
 import random
+from re import A
 
 #グローバル変数
 alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")#アルファベット
-num_tgt = 10#対象文字数
-num_lost = 2#欠損文字数
-max_repeat = 5#最大繰り返し回数
+tgt= 10#対象文字数
+lose = 2#欠損文字数
+re= 5#最大繰り返し回数
 
+
+#main関数
 def main():
+    for i in range(re):#最大繰り返し回数だけ繰り返す。
+        q = question()
+        if answer(q):
+            break#正解ならfor文を抜ける
+        else:
+            continue#不正解なら次の繰り返しに移行する
+        
+
+#question関数
+def question():
+    global alphabet, tgt, lose
+
+    target = random.sample(alphabet, tgt)#10個のアルファベットのリスト
+    lost_lit = random.sample(target, lose)#targetリストから選ばれた2個のアルファベットのリスト
+
+    print("対象文字")
+    print(target, end = " ")#targetリストの中身を一行に表示
+    print()#一行改行
+
+    for i in range(lose):#欠損文字数分繰り返す
+        target.remove(lost_lit[i])#targetから欠損文字を消去する
+    random.shuffle(target)
+
+    print("表示文字")
+    print(target, end = " ")#欠損させたtargetリストの中身を一行に表示
+    print()#一行改行
+
+    return lost_lit#lost_litリストをかえす
+
+
+#answer関数
+def answer(question):
+    global lose
+
+    #欠損文字数の解答と評価
+    num_ans = int(input("欠損文字はいくつあるでしょうか？"))
+    if num_ans == lose:#解答の評価
+        print("せいかいです！それでは、具体的に欠損文字を一つずつ答えてください。")
+    else:
+        print("ふせいかいです！またチャレンジしてくださいね")
+        return 0
+    
+    #欠損文字の解答と評価
+    lit_ans1 = input("一つ目の文字を入力してください。")
+    if lit_ans1 in question:#lit_ans1がquestionリスト内にあるなら
+        pass
+    else:
+        print("ふせいかいです！またチャレンジしてくださいね")
+        return 0
+    question.remove(lit_ans1)#lit_ans1をquestionリスト内から消去する。
+    
+    lit_ans2 = input("二つ目の文字を入力してください。")
+    if lit_ans2 in question:#lit_ans2がquestionリスト内にあるなら
+        print("せいかいです！")
+        return True
+    else:
+        print("ふせいかいです！またチャレンジしてくださいね")
+        return 0
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    """
     i = 0#問題の繰り返し番号
     while (i < max_repeat):
         print("対象文字 : ")
-        display = make_target(alphabet, num_tgt)
-        for i in range(len(display)):
-            print(display[i], end = " ")#対象文字の表示
+        target = make_target(alphabet, num_tgt)
+        for i in range(len(target)):
+            print(target[i], end = " ")#対象文字の表示
+        print()
         print("表示文字 : ")
+        display = lose_target(num_lost, alphabet, target)
         for i in range(len(display)):
             print(display[i], end = " ")
         print()
@@ -45,7 +135,10 @@ def lose_target(num, alphabet, target):#欠損文字数とアルファベット�
         for j in range(target):
             if target[j] == alphabet[lose_idx]:
                 lose_list.append(target.pop(j))
-    return lose_list
+    tgt_lose_list = [target, lose_list]
+        
+    return tgt_lose_list
 
 if __name__ == "__main__":
     main()
+    """
