@@ -3,18 +3,21 @@ from re import A
 
 #グローバル変数
 alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")#アルファベット
-tgt= 10#対象文字数
+tgt = 10#対象文字数
 lose = 2#欠損文字数
-re= 5#最大繰り返し回数
+re = 5#最大繰り返し回数
+now = 0#現在の繰り返し番号
 
 
 #main関数
 def main():
-    for i in range(re):#最大繰り返し回数だけ繰り返す。
+    global re, now
+    while now < re:#最大繰り返し回数だけ繰り返す。
         q = question()
         if answer(q):
-            break#正解ならfor文を抜ける
+            break#正解ならwhile文を抜ける
         else:
+            now += 1
             continue#不正解なら次の繰り返しに移行する
         
 
@@ -26,7 +29,8 @@ def question():
     lost_lit = random.sample(target, lose)#targetリストから選ばれた2個のアルファベットのリスト
 
     print("対象文字")
-    print(target, end = " ")#targetリストの中身を一行に表示
+    for i in range(len(target)):
+        print(target[i], end = " ")#targetリストの要素を一つずつ一行に表示
     print()#一行改行
 
     for i in range(lose):#欠損文字数分繰り返す
@@ -34,7 +38,8 @@ def question():
     random.shuffle(target)
 
     print("表示文字")
-    print(target, end = " ")#欠損させたtargetリストの中身を一行に表示
+    for i in range(len(target)):
+        print(target[i], end = " ")#欠損させたtargetリストの要素を一行に表示
     print()#一行改行
 
     return lost_lit#lost_litリストをかえす
@@ -45,7 +50,11 @@ def answer(question):
     global lose
 
     #欠損文字数の解答と評価
-    num_ans = int(input("欠損文字はいくつあるでしょうか？"))
+    try:
+        num_ans = int(input("欠損文字はいくつあるでしょうか？"))
+    except ValueError:
+        print("整数を入力してください")
+        return 0
     if num_ans == lose:#解答の評価
         print("せいかいです！それでは、具体的に欠損文字を一つずつ答えてください。")
     else:
