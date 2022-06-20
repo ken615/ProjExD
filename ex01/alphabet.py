@@ -1,5 +1,6 @@
 import random
 from re import A
+import datetime
 
 #グローバル変数
 alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")#アルファベット
@@ -12,6 +13,8 @@ now = 0#現在の繰り返し番号
 #main関数
 def main():
     global re, now
+
+    st = datetime.datetime.now()#開始時の時刻を保持
     while now < re:#最大繰り返し回数だけ繰り返す。
         q = question()
         if answer(q):
@@ -19,6 +22,8 @@ def main():
         else:
             now += 1
             continue#不正解なら次の繰り返しに移行する
+    fi = datetime.datetime.now()#終了時の時刻を保持
+    print((fi - st).seconds)
         
 
 #question関数
