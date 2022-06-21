@@ -6,8 +6,8 @@ if __name__ == "__main__":
     def button_click(event):
             btn = event.widget
             txt = btn["text"]
-            tkm.showinfo("報告", f"{txt}のボタンがクリックされました。")
-
+            #tkm.showinfo("報告", f"{txt}のボタンがクリックされました。")
+            entry.insert(0, f"{txt}")
 
     root = tk.Tk()
     root.title("calc")
