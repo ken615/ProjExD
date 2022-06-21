@@ -1,3 +1,4 @@
+from cmath import e
 import tkinter as tk
 import tkinter.messagebox as tkm
 
@@ -13,13 +14,25 @@ if __name__ == "__main__":
             res = eval(eqn)
             entry.delete(0, tk.END)
             entry.insert(tk.END, res)
+
+        #ACがクリックされたとき
+        elif txt == "AC":
+            entry.delete(0, tk.END)
+
+        #bin+=がクリックされたとき
+        elif txt == "bin+=":
+            eqn = entry.get()
+            res = eval(eqn)
+            b_res = bin(res)#足し算の結果を2進数にする
+            b_res = b_res[2:]#先頭の0bをとる
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, b_res)
+            
+        #それ以外の時
         else:
             entry.insert(tk.END, f"{txt}")
 
-        #ACがクリックされたとき
-        if txt == "AC":
-            entry.delete(0, tk.END)
-
+            
     root = tk.Tk()
     root.title("すごそうな電卓")
     #root.geometry("300x550")#ウィンドウの表示
@@ -56,6 +69,12 @@ if __name__ == "__main__":
                            font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
     button.grid(row = r + 1, column = 0)
+
+    #2進数計算のボタン
+    button = tk.Button(root, text = "bin+=", width = 4, height = 1, 
+                           font = ("Times New Roman", 30))
+    button.bind("<1>", button_click)
+    button.grid(row = r + 1, column = 1)
 
     #表示欄
     entry = tk.Entry(root, justify = "right", width = 10, font = ("Times New Roman", 40))
