@@ -42,6 +42,14 @@ if __name__ == "__main__":
         else:
             entry.insert(tk.END, f"{txt}")
 
+    #マウスカーソルがボタンに乗ったら色を変える
+    def mouse_on(event):
+        event.widget["bg"] = "#ffffbf"
+
+    #マウスカーソルがボタンから離れたら色を戻す
+    def mouse_out(event):
+        event.widget["bg"] = "SystemButtonFace"
+
             
     root = tk.Tk()
     root.title("すごそうな電卓")
@@ -56,6 +64,8 @@ if __name__ == "__main__":
         button = tk.Button(root, text = f"{i}", width = 4, height = 1, 
                            font = ("Times New Roman", 30))
         button.bind("<1>", button_click)
+        button.bind("<Enter>", mouse_on)
+        button.bind("<Leave>", mouse_out)
         button.grid(row = r, column = c)
         c += 1
         if ((i - 1) % 3) == 0:
@@ -66,30 +76,40 @@ if __name__ == "__main__":
     button = tk.Button(root, text = "+", width = 4, height = 1, 
                            font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
+    button.bind("<Enter>", mouse_on)
+    button.bind("<Leave>", mouse_out)
     button.grid(row = r, column = c)
 
     #=のボタン
     button = tk.Button(root, text = "=", width = 4, height = 1, 
                            font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
+    button.bind("<Enter>", mouse_on)
+    button.bind("<Leave>", mouse_out)
     button.grid(row = r, column = c + 1)
 
     #AC(オールクリア)のボタン
     button = tk.Button(root, text = "AC", width = 4, height = 1, 
                            font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
+    button.bind("<Enter>", mouse_on)
+    button.bind("<Leave>", mouse_out)
     button.grid(row = r + 1, column = 0)
 
     #計算結果を2進数にするボタン
     button = tk.Button(root, text = "bin+=", width = 4, height = 1, 
                            font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
+    button.bind("<Enter>", mouse_on)
+    button.bind("<Leave>", mouse_out)
     button.grid(row = r + 1, column = 1)
 
     #2進数同士の計算をするボタン
     button = tk.Button(root, text = "2-2", width = 4, height = 1,
                         font = ("Times New Roman", 30))
     button.bind("<1>", button_click)
+    button.bind("<Enter>", mouse_on)
+    button.bind("<Leave>", mouse_out)
     button.grid(row = r + 1, column = 2)
 
     #表示欄
