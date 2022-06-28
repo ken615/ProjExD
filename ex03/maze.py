@@ -14,25 +14,30 @@ def key_up(event):
 
 #キーが押されたときのこうかとんの動き
 def main_proc():
-    global cx, cy, mx, my, mz
+    global cx, cy, mx, my, mz, koka
     if key == "Up":
         if mz[my - 1][mx] == 0:#移動した先が0なら
             my -= 1
+        koka = tk.PhotoImage(file = "ex03/fig/4.png")
     if key == "Down":
         if mz[my + 1][mx] == 0:#移動した先が0なら
             my += 1
+        koka = tk.PhotoImage(file = "ex03/fig/3.png")
     if key == "Left":
         if mz[my][mx - 1] == 0:#移動した先が0なら
             mx -= 1
+        koka = tk.PhotoImage(file = "ex03/fig/0.png")
     if key == "Right":
         if mz[my][mx + 1] == 0:#移動した先が0なら
             mx += 1
+        koka = tk.PhotoImage(file = "ex03/fig/2.png")
     cx = mx * 100 + 50#マスの中心
     cy = my * 100 + 50#マスの中心
+    canvas.create_image(cx, cy, image = koka, tag = "koka")
     canvas.coords("koka", cx, cy)
     if (cx, cy) == (1350, 750):
         tkm.showinfo("結果", "ゴール")
-        return
+        quit()
     root.after(100, main_proc)
 
 #時間制限を表す関数
@@ -70,7 +75,7 @@ if __name__ == "__main__":
     canvas.create_rectangle(1300, 700, 1400, 800, fill = "blue")
     canvas.create_rectangle(100, 100, 200, 200, fill = "red")
     #こうかとん生成
-    koka = tk.PhotoImage(file = "ex03/fig/3.png")
+    koka = tk.PhotoImage(file = "ex03/fig/1.png")
     cx, cy = mx*100 + 50, my*100 + 50
     canvas.create_image(cx, cy, image = koka, tag = "koka")
     #ウィンドウ生成
