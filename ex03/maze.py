@@ -13,17 +13,19 @@ def key_up(event):
 
 #キーが押されたときのこうかとんの動き
 def main_proc():
-    global cx, cy
+    global cx, cy, mx, my
     if key == "Up":
-        cy -= 20
+        my -= 1
     if key == "Down":
-        cy += 20
+        my += 1
     if key == "Left":
-        cx -= 20
+        mx -= 1
     if key == "Right":
-        cx += 20
-    canvas.coords("koka", cx + 20, cy)
-    root.after(100, main_proc)
+        mx += 1
+    cx = mx * 100 + 50
+    cy = my * 100 + 50
+    canvas.coords("koka", cx, cy)
+    root.after(200, main_proc)
 
 #本文
 if __name__ == "__main__":
@@ -31,7 +33,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
-    root.after(100, main_proc)
+    root.after(200, main_proc)
     root.title("迷えるこうかとん")
     #背景
     canvas = tk.Canvas(root,
@@ -41,10 +43,12 @@ if __name__ == "__main__":
                       )
     canvas.pack()
     #迷路作成
-    mz = mzmk.make_maze(15, 9)
+    mz = mzmk.make_maze(15, 9)#1:壁/0:床
+    mzmk.show_maze(canvas, mz)
+    mx, my = 1, 1#マス
     #こうかとん生成
     koka = tk.PhotoImage(file = "ex03/fig/3.png")
-    cx, cy = 300, 400
+    cx, cy = mx*100 + 50, my*100 + 50
     canvas.create_image(cx, cy, image = koka, tag = "koka")
     #ウィンドウ生成
     root.mainloop()
