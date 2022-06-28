@@ -15,21 +15,21 @@ def key_up(event):
 def main_proc():
     global cx, cy, mx, my, mz
     if key == "Up":
-        if mz[my - 1][mx] == 0:
+        if mz[my - 1][mx] == 0:#移動した先が0なら
             my -= 1
     if key == "Down":
-        if mz[my + 1][mx] == 0:
+        if mz[my + 1][mx] == 0:#移動した先が0なら
             my += 1
     if key == "Left":
-        if mz[my][mx - 1] == 0:
+        if mz[my][mx - 1] == 0:#移動した先が0なら
             mx -= 1
     if key == "Right":
-        if mz[my][mx + 1] == 0:
+        if mz[my][mx + 1] == 0:#移動した先が0なら
             mx += 1
-    cx = mx * 100 + 50
-    cy = my * 100 + 50
+    cx = mx * 100 + 50#マスの中心
+    cy = my * 100 + 50#マスの中心
     canvas.coords("koka", cx, cy)
-    root.after(200, main_proc)
+    root.after(100, main_proc)
 
 #本文
 if __name__ == "__main__":
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
-    root.after(200, main_proc)
+    root.after(100, main_proc)
     root.title("迷えるこうかとん")
     #背景
     canvas = tk.Canvas(root,
