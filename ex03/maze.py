@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as tkm
 import maze_maker as mzmk
 
 #キーが押されたとき
@@ -29,11 +30,16 @@ def main_proc():
     cx = mx * 100 + 50#マスの中心
     cy = my * 100 + 50#マスの中心
     canvas.coords("koka", cx, cy)
+    if (cx, cy) == (1350, 750):
+        tkm.showinfo("結果", "ゴール")
+        return
     root.after(100, main_proc)
+
 
 #本文
 if __name__ == "__main__":
-    key = ""
+    key = ""#押されたキーを保持する変数
+    tmr = 0#経過時間を保持する変数
     root = tk.Tk()
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
@@ -50,6 +56,8 @@ if __name__ == "__main__":
     mz = mzmk.make_maze(15, 9)#1:壁/0:床
     mzmk.show_maze(canvas, mz)
     mx, my = 1, 1#マス
+    canvas.create_rectangle(1300, 700, 1400, 800, fill = "blue")
+    canvas.create_rectangle(100, 100, 200, 200, fill = "red")
     #こうかとん生成
     koka = tk.PhotoImage(file = "ex03/fig/3.png")
     cx, cy = mx*100 + 50, my*100 + 50
