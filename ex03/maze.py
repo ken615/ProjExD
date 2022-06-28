@@ -35,7 +35,7 @@ def main_proc():
         return
     root.after(100, main_proc)
 
-
+#時間制限を表す関数
 def count_down():
     global tmr
     tmr -= 1
@@ -43,7 +43,7 @@ def count_down():
         tkm.showinfo("報告", "あと10秒!")
     if tmr == 0:
         tkm.showinfo("報告", "残念! タイムアップ!")
-        return
+        quit()
     root.after(1000, count_down)
 
 #本文
