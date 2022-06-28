@@ -16,40 +16,41 @@ def key_up(event):
 def main_proc():
     global cx, cy, mx, my, mz, koka
     if key == "Up":
-        if mz[my - 1][mx] == 0:#移動した先が0なら
+        if mz[my - 1][mx] == 0:#移動した先が0なら進む
             my -= 1
         koka = tk.PhotoImage(file = "ex03/fig/4.png")
     if key == "Down":
-        if mz[my + 1][mx] == 0:#移動した先が0なら
+        if mz[my + 1][mx] == 0:#移動した先が0なら進む
             my += 1
         koka = tk.PhotoImage(file = "ex03/fig/3.png")
     if key == "Left":
-        if mz[my][mx - 1] == 0:#移動した先が0なら
+        if mz[my][mx - 1] == 0:#移動した先が0なら進む
             mx -= 1
         koka = tk.PhotoImage(file = "ex03/fig/0.png")
     if key == "Right":
-        if mz[my][mx + 1] == 0:#移動した先が0なら
+        if mz[my][mx + 1] == 0:#移動した先が0なら進む
             mx += 1
         koka = tk.PhotoImage(file = "ex03/fig/2.png")
     cx = mx * 100 + 50#マスの中心
     cy = my * 100 + 50#マスの中心
     canvas.create_image(cx, cy, image = koka, tag = "koka")
     canvas.coords("koka", cx, cy)
-    if (cx, cy) == (1350, 750):
-        tkm.showinfo("結果", "ゴール")
+    if (mx, my) == (13, 7):#ゴール地点に到達したら、
+        root.after_cancel(jid)#count_down関数を停止する。（時間制限を停止する）
+        tkm.showinfo("結果", f"残り{tmr}秒でゴール")#結果を表示
         quit()
     root.after(100, main_proc)
 
 #時間制限を表す関数
 def count_down():
-    global tmr
+    global tmr, jid
     tmr -= 1
     if tmr == 10:
         tkm.showinfo("報告", "あと10秒!")
     if tmr == 0:
         tkm.showinfo("報告", "残念! タイムアップ!")
         quit()
-    root.after(1000, count_down)
+    jid = root.after(1000, count_down)#キャンセルできるようにjidに代入
 
 #本文
 if __name__ == "__main__":
@@ -59,7 +60,8 @@ if __name__ == "__main__":
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
     root.after(100, main_proc)
-    root.after(1000, count_down)
+    root.bind("<KeyPress>")
+    jid = root.after(1000, count_down)#キャンセルできるようにjidに代入しておく
     root.title("迷えるこうかとん")
     #背景
     canvas = tk.Canvas(root,
