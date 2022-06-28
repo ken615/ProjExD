@@ -36,14 +36,25 @@ def main_proc():
     root.after(100, main_proc)
 
 
+def count_down():
+    global tmr
+    tmr -= 1
+    if tmr == 10:
+        tkm.showinfo("報告", "あと10秒!")
+    if tmr == 0:
+        tkm.showinfo("報告", "残念! タイムアップ!")
+        return
+    root.after(1000, count_down)
+
 #本文
 if __name__ == "__main__":
     key = ""#押されたキーを保持する変数
-    tmr = 0#経過時間を保持する変数
+    tmr = 20#経過時間を保持する変数
     root = tk.Tk()
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
     root.after(100, main_proc)
+    root.after(1000, count_down)
     root.title("迷えるこうかとん")
     #背景
     canvas = tk.Canvas(root,
