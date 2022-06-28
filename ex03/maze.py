@@ -13,15 +13,19 @@ def key_up(event):
 
 #キーが押されたときのこうかとんの動き
 def main_proc():
-    global cx, cy, mx, my
+    global cx, cy, mx, my, mz
     if key == "Up":
-        my -= 1
+        if mz[my - 1][mx] == 0:
+            my -= 1
     if key == "Down":
-        my += 1
+        if mz[my + 1][mx] == 0:
+            my += 1
     if key == "Left":
-        mx -= 1
+        if mz[my][mx - 1] == 0:
+            mx -= 1
     if key == "Right":
-        mx += 1
+        if mz[my][mx + 1] == 0:
+            mx += 1
     cx = mx * 100 + 50
     cy = my * 100 + 50
     canvas.coords("koka", cx, cy)
