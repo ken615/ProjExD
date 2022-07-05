@@ -11,8 +11,21 @@ def main():
     bg_rect = background.get_rect()#backgroundのRect
     screen.blit(background, bg_rect)#背景をscreenに張り付ける
 
-    pg.display.update()
-    clock.tick(0.5)
+    tori_img = pg.image.load("fig/6.png")#Surfaceクラスオブジェクト
+    tori_img = pg.transform.rotozoom(tori_img, 0, 2.0)#tori_imgを2.0倍の大きさに
+    tori_rect = tori_img.get_rect()#Rectクラスオブジェクト
+    tori_rect.center = (900, 400)#900,400に表示
+
+    while True:
+        screen.blit(background, bg_rect)#背景をscreenに張り付ける
+        screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
+
+
+        for event in pg.event.get():#イベントを繰り返し処理
+            if event.type == pg.QUIT: return
+
+        pg.display.update()
+        clock.tick(1000)
 
 
 if __name__ == "__main__":
