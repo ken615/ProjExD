@@ -38,17 +38,34 @@ def main():
         
 
         key_list = pg.key.get_pressed()#すべてのキーの入力状態を保持
-        if key_list[pg.K_UP] == True: tori_rect.centery -= 1
-        if key_list[pg.K_DOWN] == True: tori_rect.centery += 1
-        if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 1
-        if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 1
+        if key_list[pg.K_UP] == True: tori_rect.centery -= 1#上キーを入力したらこうかとんを上に移動
+        if key_list[pg.K_DOWN] == True: tori_rect.centery += 1#下キーを入力したらこうかとんを下に移動
+        if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 1#左キーを入力したらこうかとんを左に移動
+        if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 1#右キーを入力したらこうかとんを右に移動
+        if check_bound(tori_rect, screen_rect) != (1, 1):
+            if key_list[pg.K_UP] == True: tori_rect.centery += 1#上キーを入力したらこうかとんを上に移動
+            if key_list[pg.K_DOWN] == True: tori_rect.centery -= 1#下キーを入力したらこうかとんを下に移動
+            if key_list[pg.K_LEFT] == True: tori_rect.centerx += 1#左キーを入力したらこうかとんを左に移動
+            if key_list[pg.K_RIGHT] == True: tori_rect.centerx -= 1
         screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
 
-        bomb_rect.move_ip(vx, vy)
+        bomb_rect.move_ip(vx, vy)#爆弾を移動させる
         screen.blit(bomb_img, bomb_rect)#爆弾をscreenに張り付ける
+        yoko, tate = check_bound(bomb_rect, screen_rect)
+        vx *= yoko
+        vy *= tate
+
+        if bomb_rect.colliderect(tori_rect): return
 
         pg.display.update()
         clock.tick(1000)
+
+
+def check_bound(rect, scr_rect):#第一引数はこうかとんと爆弾のrect、第二引数はスクリーンのrect
+    yoko, tate = +1, +1#領域内
+    if rect.left < scr_rect.left or scr_rect.right < rect.right: yoko *= -1#領域外
+    if rect.top < scr_rect.top or scr_rect.bottom < rect.bottom: tate *= -1#領域外
+    return (yoko, tate)
 
 
 if __name__ == "__main__":
