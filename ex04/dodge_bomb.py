@@ -27,6 +27,8 @@ def main():
     bomb_rect = bomb_img.get_rect()#Rect
     bomb_rect.centerx = random.randint(0, screen_rect.width)#screen内のランダムな位置に生成
     bomb_rect.centery = random.randint(0, screen_rect.height)#screen内のランダムな位置に生成
+    vx = +1#爆弾の横方向の速度
+    vy = +1#爆弾の縦方向の速度
 
     while True:
         screen.blit(background, bg_rect)#背景をscreenに張り付ける
@@ -42,6 +44,7 @@ def main():
         if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 1
         screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
 
+        bomb_rect.move_ip(vx, vy)
         screen.blit(bomb_img, bomb_rect)#爆弾をscreenに張り付ける
 
         pg.display.update()
