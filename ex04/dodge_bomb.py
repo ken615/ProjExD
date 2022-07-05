@@ -7,7 +7,7 @@ def main():
     clock = pg.time.Clock()
 
     #基本画面
-    pg.display.set_caption("逃げろ！こうかとん")#タイトルの設定
+    pg.display.set_caption("Escape from blue bomb")#タイトルの設定
     screen = pg.display.set_mode((1600, 900))#1600x900のSurface
     screen_rect = screen.get_rect()#screenのRect
     background = pg.image.load("fig/pg_bg.jpg")#背景画像のSurface
@@ -37,8 +37,8 @@ def main():
     rbomb_rect = rbomb_img.get_rect()#Rect
     rbomb_rect.centerx = screen_rect.width/2
     rbomb_rect.centery = screen_rect.height/2
-    rvx = +10
-    rvy = +10    
+    rvx = +9
+    rvy = +9    
 
 
     while True:
