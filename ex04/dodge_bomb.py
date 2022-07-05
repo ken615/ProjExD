@@ -1,9 +1,12 @@
 import pygame as pg
 import sys
+import random
 
 def main():
+    #時間計測用
     clock = pg.time.Clock()
 
+    #基本画面
     pg.display.set_caption("逃げろ！こうかとん")#タイトルの設定
     screen = pg.display.set_mode((1600, 900))#1600x900のSurface
     screen_rect = screen.get_rect()#screenのRect
@@ -11,10 +14,19 @@ def main():
     bg_rect = background.get_rect()#backgroundのRect
     screen.blit(background, bg_rect)#背景をscreenに張り付ける
 
+    #こうかとんの画像
     tori_img = pg.image.load("fig/6.png")#Surfaceクラスオブジェクト
     tori_img = pg.transform.rotozoom(tori_img, 0, 2.0)#tori_imgを2.0倍の大きさに
     tori_rect = tori_img.get_rect()#Rectクラスオブジェクト
     tori_rect.center = (900, 400)#900,400に表示
+
+    #爆弾
+    bomb_img = pg.Surface((20, 20))#Surface
+    bomb_img.set_colorkey((0, 0, 0))
+    pg.draw.circle(bomb_img, (255, 0, 0), (10, 10), (10))
+    bomb_rect = bomb_img.get_rect()#Rect
+    bomb_rect.centerx = random.randint(0, screen_rect.width)#screen内のランダムな位置に生成
+    bomb_rect.centery = random.randint(0, screen_rect.height)#screen内のランダムな位置に生成
 
     while True:
         screen.blit(background, bg_rect)#背景をscreenに張り付ける
@@ -29,6 +41,8 @@ def main():
         if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 1
         if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 1
         screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
+
+        screen.blit(bomb_img, bomb_rect)#爆弾をscreenに張り付ける
 
         pg.display.update()
         clock.tick(1000)
