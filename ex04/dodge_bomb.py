@@ -18,11 +18,17 @@ def main():
 
     while True:
         screen.blit(background, bg_rect)#背景をscreenに張り付ける
-        screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
-
 
         for event in pg.event.get():#イベントを繰り返し処理
             if event.type == pg.QUIT: return
+        
+
+        key_list = pg.key.get_pressed()#すべてのキーの入力状態を保持
+        if key_list[pg.K_UP] == True: tori_rect.centery -= 1
+        if key_list[pg.K_DOWN] == True: tori_rect.centery += 1
+        if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 1
+        if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 1
+        screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
 
         pg.display.update()
         clock.tick(1000)
