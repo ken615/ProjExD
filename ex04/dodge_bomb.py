@@ -8,8 +8,8 @@ def main():
     clock = pg.time.Clock()
 
     #基本画面
-    pg.display.set_caption("Escape from blue bomb")#タイトルの設定
-    screen = pg.display.set_mode((1600, 900))#1600x900のSurface
+    pg.display.set_caption("Escape from bombs")#タイトルの設定
+    screen = pg.display.set_mode((1280, 680))#1600x900のSurface
     screen_rect = screen.get_rect()#screenのRect
     background = pg.image.load("fig/pg_bg.jpg")#背景画像のSurface
     bg_rect = background.get_rect()#backgroundのRect
@@ -17,9 +17,10 @@ def main():
 
     #こうかとんの画像
     tori_img = pg.image.load("fig/6.png")#Surfaceクラスオブジェクト
-    tori_img = pg.transform.rotozoom(tori_img, 0, 2.0)#tori_imgを2.0倍の大きさに
+    tori_img = pg.transform.rotozoom(tori_img, 0, 1.5)#tori_imgを2.0倍の大きさに
     tori_rect = tori_img.get_rect()#Rectクラスオブジェクト
     tori_rect.center = (900, 400)#900,400に表示
+    rev = False#移動方向反転のフラグ
 
     #爆弾赤
     bomb_img = pg.Surface((20, 20))#Surface
@@ -53,6 +54,15 @@ def main():
     yvy = 1 
     pg.time.set_timer(31, 200)#500msごとに黄爆弾の向きをこうかとんの方向に変える。
 
+    #アイテム
+    item_img = pg.image.load("fig/hatena.jpeg")#Surface
+    item_img = pg.transform.rotozoom(item_img, 0, 0.1)
+    item_rect = item_img.get_rect()#Rect
+    item_rect.centerx = random.randint(0, screen_rect.width)#screen内のランダムな位置に生成
+    item_rect.centery = random.randint(0, screen_rect.height)#screen内のランダムな位置に生成
+    ivx = 1
+    ivy = 1
+
 
     while True:
         screen.blit(background, bg_rect)#背景をscreenに張り付ける
@@ -72,22 +82,38 @@ def main():
                 yvy = tate #移動方向
 
         key_list = pg.key.get_pressed()#すべてのキーの入力状態を保持
-        if key_list[pg.K_UP] == True: tori_rect.centery -= 2#上キーを入力したらこうかとんを上に移動
-        if key_list[pg.K_DOWN] == True: tori_rect.centery += 2#下キーを入力したらこうかとんを下に移動
-        if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 2#左キーを入力したらこうかとんを左に移動
-        if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 2#右キーを入力したらこうかとんを右に移動
-        if check_bound(tori_rect, screen_rect) != (1, 1):
+        if rev == False:#反転が無効なら
+            if key_list[pg.K_UP] == True: tori_rect.centery -= 2#上キーを入力したらこうかとんを上に移動
+            if key_list[pg.K_DOWN] == True: tori_rect.centery += 2#下キーを入力したらこうかとんを下に移動
+            if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 2#左キーを入力したらこうかとんを左に移動
+            if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 2#右キーを入力したらこうかとんを右に移動
+            if check_bound(tori_rect, screen_rect) != (1, 1):#移動先が画面外なら
+                if key_list[pg.K_UP] == True: tori_rect.centery += 2#画面外なら上キーを押しても下に移動
+                if key_list[pg.K_DOWN] == True: tori_rect.centery -= 2#画面外なら下キーを押しても上に移動
+                if key_list[pg.K_LEFT] == True: tori_rect.centerx += 2#画面外なら左キーを押しても右に移動
+                if key_list[pg.K_RIGHT] == True: tori_rect.centerx -= 2#画面外なら右キーを押しても左に移動
+        elif rev == True:#反転が有効なら
             if key_list[pg.K_UP] == True: tori_rect.centery += 2#画面外なら上キーを押しても下に移動
             if key_list[pg.K_DOWN] == True: tori_rect.centery -= 2#画面外なら下キーを押しても上に移動
             if key_list[pg.K_LEFT] == True: tori_rect.centerx += 2#画面外なら左キーを押しても右に移動
             if key_list[pg.K_RIGHT] == True: tori_rect.centerx -= 2#画面外なら右キーを押しても左に移動
+            if check_bound(tori_rect, screen_rect) != (1, 1):#移動先が画面外なら
+                if key_list[pg.K_UP] == True: tori_rect.centery -= 2#画面外なら上キーを押しても下に移動
+                if key_list[pg.K_DOWN] == True: tori_rect.centery += 2#画面外なら下キーを押しても上に移動
+                if key_list[pg.K_LEFT] == True: tori_rect.centerx -= 2#画面外なら左キーを押しても右に移動
+                if key_list[pg.K_RIGHT] == True: tori_rect.centerx += 2#画面外なら右キーを押しても左に移動
         screen.blit(tori_img, tori_rect)#こうかとんをscreenに張り付ける
+        screen.blit(item_img, item_rect)#アイテムをscreenに貼り付ける
+        item_rect.move_ip(ivx, ivy)#アイテムを移動させる
+        yoko, tate = check_bound(item_rect, screen_rect)#アイテムのスクリーン外判定
+        ivx *= yoko
+        ivy *= tate
 
         bomb_rect.move_ip(vx, vy)#爆弾赤を移動させる
         screen.blit(bomb_img, bomb_rect)#爆弾赤をscreenに張り付ける
         screen.blit(ybomb_img, ybomb_rect)#爆弾黄をscreenに張り付ける
         screen.blit(rbomb_img, rbomb_rect)#爆弾青をscreenに張り付ける
-        yoko, tate = check_bound(bomb_rect, screen_rect)
+        yoko, tate = check_bound(bomb_rect, screen_rect)#爆弾赤のスクリーン外判定
         vx *= yoko
         vy *= tate
 
@@ -104,7 +130,15 @@ def main():
             
 
             
-
+        if item_rect.colliderect(tori_rect):
+            #アイテム
+            item_img = pg.image.load("fig/hatena.jpeg")#Surface
+            item_img = pg.transform.rotozoom(item_img, 0, 0.1)
+            item_rect = item_img.get_rect()#Rect
+            item_rect.centerx = random.randint(0, screen_rect.width)#screen内のランダムな位置に生成
+            item_rect.centery = random.randint(0, screen_rect.height)#screen内のランダムな位置に生成
+            if rev == True: rev = False
+            elif rev == False: rev = True
         if bomb_rect.colliderect(tori_rect): 
             tkm.showinfo("ゲームオーバー", f"ゲームオーバー！\n記録:{pg.time.get_ticks() // 1000}秒！")
             return#こうかとんと爆弾赤が接触したら終了      
