@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import random
+import tkinter.messagebox as tkm
 
 def main():
     #時間計測用
@@ -50,7 +51,7 @@ def main():
     ybomb_rect.centery = screen_rect.height/2
     yvx = 1
     yvy = 1 
-    pg.time.set_timer(31, 100)#100msごとに黄爆弾の向きをこうかとんの方向に変える。
+    pg.time.set_timer(31, 200)#500msごとに黄爆弾の向きをこうかとんの方向に変える。
 
 
     while True:
@@ -104,9 +105,15 @@ def main():
 
             
 
-        if bomb_rect.colliderect(tori_rect): return#こうかとんと爆弾赤が接触したら終了            
-        if rbomb_rect.colliderect(tori_rect): return#こうかとんと爆弾青が接触したら終了
-        if ybomb_rect.colliderect(tori_rect): return#こうかとんと爆弾青が接触したら終了
+        if bomb_rect.colliderect(tori_rect): 
+            tkm.showinfo("ゲームオーバー", f"ゲームオーバー！\n記録:{pg.time.get_ticks() // 1000}秒！")
+            return#こうかとんと爆弾赤が接触したら終了      
+        if rbomb_rect.colliderect(tori_rect): 
+            tkm.showinfo("ゲームオーバー", f"ゲームオーバー！\n記録:{pg.time.get_ticks() // 1000}秒！")
+            return#こうかとんと爆弾青が接触したら終了
+        if ybomb_rect.colliderect(tori_rect): 
+            tkm.showinfo("ゲームオーバー", f"ゲームオーバー！\n記録:{pg.time.get_ticks() // 1000}秒！")
+            return#こうかとんと爆弾黄が接触したら終了黄
         pg.display.update()
         clock.tick(1000)
 
