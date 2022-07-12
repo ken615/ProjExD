@@ -5,7 +5,7 @@ import random
 def main():
     clock = pg.time.Clock()
 
-    scr = Screen("逃げろ！こうかとん", (1600, 900), "fig/pg_bg.jpg")#スクリーン
+    scr = Screen("負けるな！こうかとん", (1600, 900), "fig/pg_bg.jpg")#スクリーン
     scr.blit()#スクリーンの貼り付け
     kkt = Bird("fig/6.png", 2.0, (900, 400))#こうかとん生成
     bkd = Bomb((255, 0, 0), 10, (+1, +1), scr)#爆弾生成
