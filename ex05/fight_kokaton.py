@@ -5,70 +5,37 @@ import random
 def main():
     clock = pg.time.Clock()
 
-    # 練習1：スクリーンと背景画像
-    # pg.display.set_caption("逃げろ！こうかとん")
-    # screen_sfc = pg.display.set_mode((1600, 900)) # Surface
-    # screen_rct = screen_sfc.get_rect()            # Rect
-    # bgimg_sfc = pg.image.load("fig/pg_bg.jpg")    # Surface
-    # bgimg_rct = bgimg_sfc.get_rect()              # Rect
-    # screen_sfc.blit(bgimg_sfc, bgimg_rct)
-    scr = Screen("逃げろ！こうかとん", (1600, 900), "fig/pg_bg.jpg")
-    scr.blit()
-
-    # 練習3：こうかとん
-    # kkimg_sfc = pg.image.load("fig/6.png")    # Surface
-    # kkimg_sfc = pg.transform.rotozoom(kkimg_sfc, 0, 2.0)  # Surface
-    # kkimg_rct = kkimg_sfc.get_rect()          # Rect
-    # kkimg_rct.center = 900, 400
-    kkt = Bird("fig/6.png", 2.0, (900, 400))
-
-    # 練習5：爆弾
-    # bmimg_sfc = pg.Surface((20, 20)) # Surface
-    # bmimg_sfc.set_colorkey((0, 0, 0))
-    # pg.draw.circle(bmimg_sfc, (255, 0, 0), (10, 10), 10)
-    # bmimg_rct = bmimg_sfc.get_rect() # Rect
-    # bmimg_rct.centerx = random.randint(0, screen_rct.width)
-    # bmimg_rct.centery = random.randint(0, screen_rct.height)
-    # vx, vy = +1, +1 # 練習6
-    bkd = Bomb((255, 0, 0), 10, (+1, +1), scr)
+    scr = Screen("逃げろ！こうかとん", (1600, 900), "fig/pg_bg.jpg")#スクリーン
+    scr.blit()#スクリーンの貼り付け
+    kkt = Bird("fig/6.png", 2.0, (900, 400))#こうかとん生成
+    bkd = Bomb((255, 0, 0), 10, (+1, +1), scr)#爆弾生成
+    ball = 0
 
     while True:
-        #screen_sfc.blit(bgimg_sfc, bgimg_rct)
-        scr.blit()
+        scr.blit()#背景の貼り付け
 
-        # 練習2
         for event in pg.event.get():
-            if event.type == pg.QUIT: return
+            if event.type == pg.QUIT: 
+                return
+            if event.type == pg.KEYDOWN and event.key == pg.K_w:
+                ball = Shot((0, 255, 0), 10, (0, -2), kkt)
+            if event.type == pg.KEYDOWN and event.key == pg.K_a:
+                ball = Shot((0, 255, 0), 10, (-2, 0), kkt)
+            if event.type == pg.KEYDOWN and event.key == pg.K_s:
+                ball = Shot((0, 255, 0), 10, (0, 2), kkt)
+            if event.type == pg.KEYDOWN and event.key == pg.K_d:
+                ball = Shot((0, 255, 0), 10, (2, 0), kkt)
 
-        # 練習4
-        # key_states = pg.key.get_pressed() # 辞書
-        # if key_states[pg.K_UP]    == True: kkimg_rct.centery -= 1
-        # if key_states[pg.K_DOWN]  == True: kkimg_rct.centery += 1
-        # if key_states[pg.K_LEFT]  == True: kkimg_rct.centerx -= 1
-        # if key_states[pg.K_RIGHT] == True: kkimg_rct.centerx += 1
-        # # 練習7
-        # if check_bound(kkimg_rct, screen_rct) != (1, 1): # 領域外だったら
-        #     if key_states[pg.K_UP]    == True: kkimg_rct.centery += 1
-        #     if key_states[pg.K_DOWN]  == True: kkimg_rct.centery -= 1
-        #     if key_states[pg.K_LEFT]  == True: kkimg_rct.centerx += 1
-        #     if key_states[pg.K_RIGHT] == True: kkimg_rct.centerx -= 1
-        # screen_sfc.blit(kkimg_sfc, kkimg_rct)
-        kkt.update(scr)
+        kkt.update(scr)#こうかとんの動き
+        bkd.update(scr)#爆弾の動き
+        if ball != 0:
+            ball.update(scr)
 
-        # # 練習6
-        # bmimg_rct.move_ip(vx, vy)
-        # # 練習5
-        # screen_sfc.blit(bmimg_sfc, bmimg_rct)
-        # # 練習7
-        # yoko, tate = check_bound(bmimg_rct, screen_rct)
-        # vx *= yoko
-        # vy *= tate
-        bkd.update(scr)
-
-        # 練習8
-        #if kkimg_rct.colliderect(bmimg_rct): return
         if kkt.rct.colliderect(bkd.rct):
             return
+        if ball != 0:
+            if ball.rct.colliderect(bkd.rct):
+                return
         pg.display.update()
         clock.tick(1000)
 
@@ -157,7 +124,30 @@ class Bomb:
         yoko, tate = check_bound(self.rct, scr.rct)
         self.vx *= yoko
         self.vy *= tate
+        scr.sfc.blit(self.sfc, self.rct)      
+
+
+#Shotクラス
+class Shot:
+    #コンストラクタ
+    def __init__(self, color, size, vxy, bird):
+        self.sfc = pg.Surface((2 * size, 2 * size))
+        self.sfc.set_colorkey((0, 0, 0))
+        pg.draw.circle(self.sfc, color, (size, size), size)
+        self.rct = self.sfc.get_rect()
+        self.rct.center = bird.rct.center
+        self.vx, self.vy = vxy
+
+    def update(self, scr: Screen):
+        self.rct.move_ip(self.vx, self.vy)
+        # yoko, tate = check_bound(self.rct, scr.rct)
+        # self.vx *= yoko
+        # self.vy *= tate
+        if check_bound(self.rct, scr.rct) != (1, 1):
+            self = 0
+            return
         scr.sfc.blit(self.sfc, self.rct)
+        
 
 
 if __name__ == "__main__":
