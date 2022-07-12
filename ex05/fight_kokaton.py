@@ -140,9 +140,6 @@ class Shot:
 
     def update(self, scr: Screen):
         self.rct.move_ip(self.vx, self.vy)
-        # yoko, tate = check_bound(self.rct, scr.rct)
-        # self.vx *= yoko
-        # self.vy *= tate
         if check_bound(self.rct, scr.rct) != (1, 1):
             self = 0
             return
