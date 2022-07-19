@@ -234,7 +234,7 @@ def main():
     bkd2 = Bomb2((255,0,0), 10, (+1, +1), scr)
     bkd3 = Bomb3((255,0,0), 10, (+1, +1), scr)
     kill = 0#撃破数
-    hp = 10
+    hp = 5#もともと10
 
     t_bgimg_sfc = pg.image.load("fig/title.png")
     t_bgimg_sfc = pg.transform.rotozoom(t_bgimg_sfc, 0, 0.84) #サイズ変更
@@ -260,7 +260,11 @@ def main():
                 scr.blit()
                 font = pg.font.Font(None,70)
                 txt = font.render(f"kill:{kill}",True, "BLUE")
-                screen.blit(txt,[400,600])
+                screen.blit(txt,[200,100])
+                if boss != 0:#変更点
+                    font = pg.font.Font(None,70)#変更点
+                    txt = font.render(f"Boss HP:{hp}",True, "RED")#変更点
+                    screen.blit(txt,[1100,100])#変更点
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
                         return
@@ -286,8 +290,10 @@ def main():
                             kill += 1
                         if boss != 0:
                             if boss.rct.colliderect(beam.rct):
+                                beams = []#変更点
                                 hp -= 1
                             if hp == 0:
+                                tkm.showinfo("GG", "ゲームクリア！")#変更点
                                 return
                         if boss == 0:
                             if kill == 5:
