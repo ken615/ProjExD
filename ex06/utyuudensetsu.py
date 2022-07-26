@@ -242,6 +242,7 @@ def main():
     bkd3 = Bomb3((255,0,0), 10, (+1, +1), scr)
     kill = 0#撃破数
     hp = 10#もともと10
+    tmr = 0#八亀
     root = tk.Tk()#引地
     root.withdraw()#引地
 
