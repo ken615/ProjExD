@@ -238,6 +238,7 @@ def main():
     kkt = Player("image_gl/starship.png", 1.0, (900, 400))
     enemy1 = Enemy("image_gl/enemy3.png", 0.7, (-2, 1), scr)
     boss = 0
+    bkd = Bomb((255,0,0), 10, (+1, +1), scr)
     bkd2 = Bomb2((255,0,0), 10, (+1, +1), scr)
     bkd3 = Bomb3((255,0,0), 10, (+1, +1), scr)
     kill = 0#撃破数
@@ -246,7 +247,7 @@ def main():
     root = tk.Tk()#引地
     root.withdraw()#引地
 
-    t_bgimg_sfc = pg.image.load("fig/Snapshot.png")
+    t_bgimg_sfc = pg.image.load("fig/Snapshot.png")#野々上
     t_bgimg_sfc = pg.transform.rotozoom(t_bgimg_sfc, 0, 0.80) #サイズ変更
     t_bgimg_rect = t_bgimg_sfc.get_rect()
     screen.blit(t_bgimg_sfc, t_bgimg_rect)
@@ -265,7 +266,7 @@ def main():
         key_states = pg.key.get_pressed() 
         pg.display.update()
 #レベル1
-        if key_states[pg.K_1] == True:
+        if key_states[pg.K_1] == True:#野々上
             beams = []
             pg.time.set_timer(35, 7000)
             while True:
@@ -288,7 +289,7 @@ def main():
                         pg.quit()#引地
                         sys.exit()#引地
                     if event.type == pg.KEYDOWN and event.key == pg.K_e:
-                        pg.mixer.music.load("music/大爆発2.mp3")
+                        pg.mixer.music.load("music/大爆発2.mp3")#野々上
                         pg.mixer.music.play(-1)
                         beams.append(kkt.attack())
                     if event.type == 35:
@@ -312,7 +313,7 @@ def main():
                                 beams = []#加藤
                                 hp -= 1#加藤
                             if hp == 0:#加藤
-                                tkm.showinfo("GG", "ゲームクリア！")#加藤
+                                tkm.showinfo("GG", "ゲームクリア！"+"\n"+f"クリアタイム：{time}")#加藤
                                 return
                         if boss == 0:#加藤
                             if kill == 5:#加藤
@@ -328,85 +329,85 @@ def main():
                         return
                 pg.display.update()
                 clock.tick(1000)
-# #レベル2
-#         if key_states[pg.K_2] == True:
-#             beams = []
-#             while True:
-#                 scr.blit()
-#                 for event in pg.event.get():
-#                     if event.type == pg.QUIT:
-#                         return
-#                     if event.type == pg.KEYDOWN and event.key == pg.K_e:
-#                         pg.mixer.music.load("music/大爆発2.mp3")
-#                         pg.mixer.music.play(-1)
-#                         beams.append(kkt.attack())
+#レベル2
+        if key_states[pg.K_2] == True:
+            beams = []
+            while True:
+                scr.blit()
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        return
+                    if event.type == pg.KEYDOWN and event.key == pg.K_e:
+                        pg.mixer.music.load("music/大爆発2.mp3")
+                        pg.mixer.music.play(-1)
+                        beams.append(kkt.attack())
 
-#                 kkt.update(scr)
-#                 enemy1.update(scr)
-#                 bkd2.update(scr)
-#                 if len(beams) != 0:
-#                     for beam in beams:
-#                         beam.update(scr)
-#                         if enemy1.rct.colliderect(beam.rct):
-#                             del enemy1
-#                             tkm.showinfo("すばらすぃ","やるやん。")
-#                             return
-#                         if bkd2.rct.colliderect(beam.rct):
-#                             del bkd2
-#                             tkm.showinfo("すばらすぃ","やるやん。")
-#                             return
-#                 if kkt.rct.colliderect(enemy1.rct): #爆弾インスタンスのrect変数
-#                     tkm.showwarning("お前が殺した。","あなたが殺した。")
-#                     return
-#                 if kkt.rct.colliderect(bkd2.rct): #爆弾インスタンスのrect変数
-#                     tkm.showwarning("お前が殺した。","あなたが殺した。")
-#                     return
-#                 pg.display.update()
-#                 clock.tick(1000)
+                kkt.update(scr)
+                enemy1.update(scr)
+                bkd2.update(scr)
+                if len(beams) != 0:
+                    for beam in beams:
+                        beam.update(scr)
+                        if enemy1.rct.colliderect(beam.rct):
+                            del enemy1
+                            tkm.showinfo("すばらすぃ","やるやん。")
+                            return
+                        if bkd2.rct.colliderect(beam.rct):
+                            del bkd2
+                            tkm.showinfo("すばらすぃ","やるやん。")
+                            return
+                if kkt.rct.colliderect(enemy1.rct): #爆弾インスタンスのrect変数
+                    tkm.showwarning("お前が殺した。","あなたが殺した。")
+                    return
+                if kkt.rct.colliderect(bkd2.rct): #爆弾インスタンスのrect変数
+                    tkm.showwarning("お前が殺した。","あなたが殺した。")
+                    return
+                pg.display.update()
+                clock.tick(1000)
 
-# #レベル3
-#         if key_states[pg.K_3] == True:
-#             beams = []
-#             while True:
-#                 scr.blit()
-#                 for event in pg.event.get():
-#                     if event.type == pg.QUIT:
-#                         return
-#                     if event.type == pg.KEYDOWN and event.key == pg.K_e:
-#                         pg.mixer.music.load("music/大爆発2.mp3") #効果音を追加
-#                         pg.mixer.music.play(-1)
-#                         beams.append(kkt.attack())
+#レベル3
+        if key_states[pg.K_3] == True:
+            beams = []
+            while True:
+                scr.blit()
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        return
+                    if event.type == pg.KEYDOWN and event.key == pg.K_e:
+                        pg.mixer.music.load("music/大爆発2.mp3") #効果音を追加
+                        pg.mixer.music.play(-1)
+                        beams.append(kkt.attack())
 
-#                 kkt.update(scr)
-#                 enemy1.update(scr)
-#                 bkd2.update(scr)
-#                 bkd3.update(scr)
-#                 if len(beams) != 0:
-#                     for beam in beams:
-#                         beam.update(scr)
-#                         if enemy1.rct.colliderect(beam.rct):
-#                             del enemy1
-#                             tkm.showinfo("すばらすぃ","やるやん。")
-#                             return
-#                         if bkd2.rct.colliderect(beam.rct):
-#                             del bkd2
-#                             tkm.showinfo("すばらすぃ","やるやん。")
-#                             return
-#                         if bkd3.rct.colliderect(beam.rct):
-#                             del bkd3
-#                             tkm.showinfo("すばらすぃ","やるやん。")
-#                             return
-#                 if kkt.rct.colliderect(bkd.rct): #爆弾インスタンスのrect変数
-#                     tkm.showwarning("お前が殺した。","あなたが殺した。")
-#                     return
-#                 if kkt.rct.colliderect(bkd2.rct): #爆弾インスタンスのrect変数
-#                     tkm.showwarning("お前が殺した。","あなたが殺した。")
-#                     return
-#                 if kkt.rct.colliderect(bkd3.rct): #爆弾インスタンスのrect変数
-#                     tkm.showwarning("お前が殺した。","あなたが殺した。")
-#                     return
-#                 pg.display.update()
-#                 clock.tick(1000)
+                kkt.update(scr)
+                enemy1.update(scr)
+                bkd2.update(scr)
+                bkd3.update(scr)
+                if len(beams) != 0:
+                    for beam in beams:
+                        beam.update(scr)
+                        if enemy1.rct.colliderect(beam.rct):
+                            del enemy1
+                            tkm.showinfo("すばらすぃ","やるやん。")
+                            return
+                        if bkd2.rct.colliderect(beam.rct):
+                            del bkd2
+                            tkm.showinfo("すばらすぃ","やるやん。")
+                            return
+                        if bkd3.rct.colliderect(beam.rct):
+                            del bkd3
+                            tkm.showinfo("すばらすぃ","やるやん。")
+                            return
+                if kkt.rct.colliderect(bkd.rct): #爆弾インスタンスのrect変数
+                    tkm.showwarning("お前が殺した。","あなたが殺した。")
+                    return
+                if kkt.rct.colliderect(bkd2.rct): #爆弾インスタンスのrect変数
+                    tkm.showwarning("お前が殺した。","あなたが殺した。")
+                    return
+                if kkt.rct.colliderect(bkd3.rct): #爆弾インスタンスのrect変数
+                    tkm.showwarning("お前が殺した。","あなたが殺した。")
+                    return
+                pg.display.update()
+                clock.tick(1000)
         
 def check_bound(rct, scr_rct):
     '''
