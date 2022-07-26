@@ -1,7 +1,13 @@
+from turtle import window_width
 import pygame as pg
 import sys
 import random
 import tkinter.messagebox as tkm
+import tkinter as tk
+
+#基本コード　野々上
+
+tmr = 0 #八亀
 
 class Screen:
     def __init__(self, title, wh, image):
@@ -74,51 +80,7 @@ class Bomb:
         self.vy *= tate
         self.blit(scr)
 
-class Bomb2:
-    def __init__(self, color, size, vxy, scr: Screen):
-        self.sfc = pg.Surface((2*size, 2*size)) # Surface
-        self.sfc.set_colorkey((0, 0, 0)) 
-        pg.draw.circle(self.sfc, color, (size, size), size)
-        self.rct = self.sfc.get_rect() # Rect
-        self.rct.centerx = random.randint(0, scr.rct.width)
-        self.rct.centery = random.randint(0, scr.rct.height)
-        self.vx, self.vy = vxy # 練習6
 
-
-    def blit(self, scr: Screen):
-        scr.sfc.blit(self.sfc, self.rct)
-
-    def update(self,scr: Screen):
-        # 練習6
-        self.rct.move_ip(self.vx, self.vy)
-        # 練習7
-        yoko, tate = check_bound(self.rct, scr.rct)
-        self.vx *= yoko
-        self.vy *= tate
-        self.blit(scr)
-
-class Bomb3:
-    def __init__(self, color, size, vxy, scr: Screen):
-        self.sfc = pg.Surface((2*size, 2*size)) # Surface
-        self.sfc.set_colorkey((0, 0, 0)) 
-        pg.draw.circle(self.sfc, color, (size, size), size)
-        self.rct = self.sfc.get_rect() # Rect
-        self.rct.centerx = random.randint(0, scr.rct.width)
-        self.rct.centery = random.randint(0, scr.rct.height)
-        self.vx, self.vy = vxy # 練習6
-
-
-    def blit(self, scr: Screen):
-        scr.sfc.blit(self.sfc, self.rct)
-
-    def update(self,scr: Screen):
-        # 練習6
-        self.rct.move_ip(self.vx, self.vy)
-        # 練習7
-        yoko, tate = check_bound(self.rct, scr.rct)
-        self.vx *= yoko
-        self.vy *= tate
-        self.blit(scr)
 
 class Shot:
     def __init__(self, chr: Bird):
@@ -224,51 +186,66 @@ class Boss:
         self.blit(scr)
 
 def main():
+    global tmr
+
     screen = pg.display.set_mode((1600,900))           #1600x900のウィンドウ作成
     clock = pg.time.Clock()
-    scr = Screen("逃げろ!こうかとん",(1600,900),"fig/town.jpg")
+    scr = Screen("宇宙伝説",(1600,900),"fig/town.jpg")
     kkt = Player("image_gl/starship.png", 1.0, (900, 400))
     enemy1 = Enemy("image_gl/enemy3.png", 0.7, (-2, 1), scr)
     boss = 0
-    bkd2 = Bomb2((255,0,0), 10, (+1, +1), scr)
-    bkd3 = Bomb3((255,0,0), 10, (+1, +1), scr)
+    bkd = Bomb((255,0,0), 10, (+1, +1), scr)
+    bkd2 = Bomb((255,0,0), 10, (+1, +1), scr)
+    bkd3 = Bomb((255,0,0), 10, (+1, +1), scr)
     kill = 0#撃破数
-    hp = 5#もともと10
+    hp = 10#もともと10
+    tmr = 0#八亀
+    root = tk.Tk()#引地
+    root.withdraw()#引地
 
-    t_bgimg_sfc = pg.image.load("fig/title.png")
-    t_bgimg_sfc = pg.transform.rotozoom(t_bgimg_sfc, 0, 0.84) #サイズ変更
+    t_bgimg_sfc = pg.image.load("fig/Snapshot.png")#野々上
+    t_bgimg_sfc = pg.transform.rotozoom(t_bgimg_sfc, 0, 0.80) #サイズ変更
     t_bgimg_rect = t_bgimg_sfc.get_rect()
     screen.blit(t_bgimg_sfc, t_bgimg_rect)
     while True:
         screen.blit(t_bgimg_sfc, t_bgimg_rect)
-        font = pg.font.Font(None,70)
-        txt = font.render("Select Level and push the button",True, "BLUE")
-        screen.blit(txt,[400,600])
+        # font = pg.font.Font(None,70)
+        # txt = font.render("Select Level and push the button",True, "BLUE")
+        # screen.blit(txt,[400,600])
         font = pg.font.Font(None,80)
-        txt = font.render("1:easy 2: nomal 3:hard",True, "YELLOW")
+        txt = font.render("Press 1 to start",True, "YELLOW")
         screen.blit(txt,[500,700])
         for event in pg.event.get():
-            if event.type == pg.QUIT: return
+            if event.type == pg.QUIT or event.type == pg.K_q:#引地
+                pg.quit()#引地
+                sys.exit()#引地
         key_states = pg.key.get_pressed() 
         pg.display.update()
 #レベル1
-        if key_states[pg.K_1] == True:
+        if key_states[pg.K_1] == True:#野々上
             beams = []
-            pg.time.set_timer(35, 3000)
+            pg.time.set_timer(35, 7000)
             while True:
+                tmr += 1 #八亀
+                time = tmr/200
+
+
                 scr.blit()
-                font = pg.font.Font(None,70)
-                txt = font.render(f"kill:{kill}",True, "BLUE")
-                screen.blit(txt,[200,100])
-                if boss != 0:#変更点
-                    font = pg.font.Font(None,70)#変更点
-                    txt = font.render(f"Boss HP:{hp}",True, "RED")#変更点
-                    screen.blit(txt,[1100,100])#変更点
+                txt = font.render(f"Time:{time}",True, "yellow")#八亀
+                screen.blit(txt,[50,50])
+                font = pg.font.Font(None,70)#川島
+                txt = font.render(f"kill:{kill}",True, "BLUE")#川島
+                screen.blit(txt,[50,800])#川島
+                if boss != 0:#加藤
+                    font = pg.font.Font(None,70)#加藤
+                    txt = font.render(f"Boss HP:{hp}",True, "RED")#加藤
+                    screen.blit(txt,[1100,100])#加藤
                 for event in pg.event.get():
-                    if event.type == pg.QUIT:
-                        return
+                    if event.type == pg.QUIT or event.type == pg.K_q:#引地
+                        pg.quit()#引地
+                        sys.exit()#引地
                     if event.type == pg.KEYDOWN and event.key == pg.K_e:
-                        pg.mixer.music.load("music/大爆発2.mp3")
+                        pg.mixer.music.load("music/大爆発2.mp3")#野々上
                         pg.mixer.music.play(-1)
                         beams.append(kkt.attack())
                     if event.type == 35:
@@ -277,26 +254,26 @@ def main():
 
                 kkt.update(scr)
                 enemy1.update(scr)
-                if boss != 0:
-                    boss.update(scr)
+                if boss != 0:#加藤
+                    boss.update(scr)#加藤
                             
                 if len(beams) != 0:
                     for beam in beams:
                         beam.update(scr)
                         if enemy1.rct.colliderect(beam.rct):
-                            del enemy1
-                            enemy1 = Enemy("image_gl/enemy3.png", 0.7, (-2, 1), scr)
-                            kill += 1
-                        if boss != 0:
-                            if boss.rct.colliderect(beam.rct):
-                                beams = []#変更点
-                                hp -= 1
-                            if hp == 0:
-                                tkm.showinfo("GG", "ゲームクリア！")#変更点
+                            del enemy1#加藤
+                            enemy1 = Enemy("image_gl/enemy3.png", 0.7, (-2, 1), scr)#川島
+                            kill += 1#川島
+                        if boss != 0:#加藤
+                            if boss.rct.colliderect(beam.rct):#加藤
+                                beams = []#加藤
+                                hp -= 1#加藤
+                            if hp == 0:#加藤
+                                tkm.showinfo("GG", "ゲームクリア！"+"\n"+f"クリアタイム：{time}")#加藤
                                 return
-                        if boss == 0:
-                            if kill == 5:
-                                boss = Boss("image_gl/enemy_boss.png", 0.5, (-2, -2), scr)
+                        if boss == 0:#加藤
+                            if kill == 5:#加藤
+                                boss = Boss("image_gl/enemy_boss.png", 0.5, (-2, -2), scr)#加藤
                                 #hp = 10
                             
                 if kkt.rct.colliderect(enemy1.rct): #爆弾インスタンスのrect変数
@@ -401,5 +378,5 @@ def check_bound(rct, scr_rct):
 if __name__ == "__main__":
     pg.init()
     main()
-    pg.quit()
-    sys.exit()
+    while True:#引地
+        main()#引地
