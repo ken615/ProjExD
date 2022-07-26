@@ -80,7 +80,51 @@ class Bomb:
         self.vy *= tate
         self.blit(scr)
 
+class Bomb2:
+    def __init__(self, color, size, vxy, scr: Screen):
+        self.sfc = pg.Surface((2*size, 2*size)) # Surface
+        self.sfc.set_colorkey((0, 0, 0)) 
+        pg.draw.circle(self.sfc, color, (size, size), size)
+        self.rct = self.sfc.get_rect() # Rect
+        self.rct.centerx = random.randint(0, scr.rct.width)
+        self.rct.centery = random.randint(0, scr.rct.height)
+        self.vx, self.vy = vxy # 練習6
 
+
+    def blit(self, scr: Screen):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self,scr: Screen):
+        # 練習6
+        self.rct.move_ip(self.vx, self.vy)
+        # 練習7
+        yoko, tate = check_bound(self.rct, scr.rct)
+        self.vx *= yoko
+        self.vy *= tate
+        self.blit(scr)
+
+class Bomb3:
+    def __init__(self, color, size, vxy, scr: Screen):
+        self.sfc = pg.Surface((2*size, 2*size)) # Surface
+        self.sfc.set_colorkey((0, 0, 0)) 
+        pg.draw.circle(self.sfc, color, (size, size), size)
+        self.rct = self.sfc.get_rect() # Rect
+        self.rct.centerx = random.randint(0, scr.rct.width)
+        self.rct.centery = random.randint(0, scr.rct.height)
+        self.vx, self.vy = vxy # 練習6
+
+
+    def blit(self, scr: Screen):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self,scr: Screen):
+        # 練習6
+        self.rct.move_ip(self.vx, self.vy)
+        # 練習7
+        yoko, tate = check_bound(self.rct, scr.rct)
+        self.vx *= yoko
+        self.vy *= tate
+        self.blit(scr)
 
 class Shot:
     def __init__(self, chr: Bird):
