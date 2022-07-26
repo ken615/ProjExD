@@ -80,69 +80,6 @@ class Bomb:
         self.vy *= tate
         self.blit(scr)
 
-class Bomb2:
-    def __init__(self, color, size, vxy, scr: Screen):
-        self.sfc = pg.Surface((2*size, 2*size)) # Surface
-        self.sfc.set_colorkey((0, 0, 0)) 
-        pg.draw.circle(self.sfc, color, (size, size), size)
-        self.rct = self.sfc.get_rect() # Rect
-        self.rct.centerx = random.randint(0, scr.rct.width)
-        self.rct.centery = random.randint(0, scr.rct.height)
-        self.vx, self.vy = vxy # 練習6
-
-
-    def blit(self, scr: Screen):
-        scr.sfc.blit(self.sfc, self.rct)
-
-    def update(self,scr: Screen):
-        # 練習6
-        self.rct.move_ip(self.vx, self.vy)
-        # 練習7
-        yoko, tate = check_bound(self.rct, scr.rct)
-        self.vx *= yoko
-        self.vy *= tate
-        self.blit(scr)
-
-class Bomb3:
-    def __init__(self, color, size, vxy, scr: Screen):
-        self.sfc = pg.Surface((2*size, 2*size)) # Surface
-        self.sfc.set_colorkey((0, 0, 0)) 
-        pg.draw.circle(self.sfc, color, (size, size), size)
-        self.rct = self.sfc.get_rect() # Rect
-        self.rct.centerx = random.randint(0, scr.rct.width)
-        self.rct.centery = random.randint(0, scr.rct.height)
-        self.vx, self.vy = vxy # 練習6
-
-
-    def blit(self, scr: Screen):
-        scr.sfc.blit(self.sfc, self.rct)
-
-    def update(self,scr: Screen):
-        # 練習6
-        self.rct.move_ip(self.vx, self.vy)
-        # 練習7
-        yoko, tate = check_bound(self.rct, scr.rct)
-        self.vx *= yoko
-        self.vy *= tate
-        self.blit(scr)
-
-class Shot:
-    def __init__(self, chr: Bird):
-        self.sfc = pg.image.load("image_gl/bullet.png")
-        self.sfc = pg.transform.rotozoom(self.sfc, -90, 1.0)  # Surface
-        self.rct = self.sfc.get_rect()          # Rect
-        self.rct.midleft = chr.rct.center
-    
-    def blit(self, scr: Screen):
-        scr.sfc.blit(self.sfc, self.rct)
-        
-    def update(self, scr: Screen):
-        # 練習6
-        self.rct.move_ip(+2, 0) #右方向に速度1で移動する。
-        # 練習7
-        self.blit(scr)
-        if check_bound(self.rct, scr.rct) != (1,1): #領域外に出たらインスタンスを消す
-            del self
 
 
 class Player:
@@ -239,8 +176,8 @@ def main():
     enemy1 = Enemy("image_gl/enemy3.png", 0.7, (-2, 1), scr)
     boss = 0
     bkd = Bomb((255,0,0), 10, (+1, +1), scr)
-    bkd2 = Bomb2((255,0,0), 10, (+1, +1), scr)
-    bkd3 = Bomb3((255,0,0), 10, (+1, +1), scr)
+    bkd2 = Bomb((255,0,0), 10, (+1, +1), scr)
+    bkd3 = Bomb((255,0,0), 10, (+1, +1), scr)
     kill = 0#撃破数
     hp = 10#もともと10
     tmr = 0#八亀
@@ -338,7 +275,7 @@ def main():
                     if event.type == pg.QUIT:
                         return
                     if event.type == pg.KEYDOWN and event.key == pg.K_e:
-                        pg.mixer.music.load("music/大爆発2.mp3")
+                        pg.mixer.music.load("music/shot.ogg")
                         pg.mixer.music.play(-1)
                         beams.append(kkt.attack())
 
